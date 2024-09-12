@@ -1,46 +1,94 @@
 tasks = []
-
 def show_menu():
-    print("\nTo-Do list:")
-    print("PRESS '1' TO ADD TASK")
-    print("PRESS '2' TO EDIT TASK")
-    print("PRESS '3' TO MARK AS PRIORITY")
-    print("PRESS '4' TO DELETE TASK")
-    print("PRESS '5' TO GROUP TASK")
-    print("PRESS '6' TO SHOW TASKS")
-    print("PRESS '7' TO EXIT LIST")
+    print("\nTo-Do List:")
+    print("1. Add a task")
+    print("2. Edit a task")
+    print("3. Mark a task as priority")
+    print("4. Remove priority from a task")
+    print("5. Group tasks")
+    print("6. Show tasks")
+    print("7. Exit")
+
 
 def add_task():
+    task = input("Enter your task: ")
+    tasks.append({"task": task, "priority": False, "group": None})
+    print(f"Task '{task}' added.")
+
 
 def edit_task():
+    show_tasks()
+    task_num = int(input("Which task number do you want to edit? ")) - 1
+    if 0 <= task_num < len(tasks):
+        tasks[task_num]['task'] = input("Enter the updated task: ")
+        print("Task updated.")
+    else:
+        print("Invalid task number.")
 
-def mark_as_task():
+def mark_priority():
+    show_tasks()
+    task_num = int(input("Which task number to mark as priority? ")) - 1
+    if 0 <= task_num < len(tasks):
+        tasks[task_num]['priority'] = True
+        print("Task marked as priority.")
+    else:
+        print("Invalid task number.")
 
-def delete_task():
+
+def remove_priority():
+    show_tasks()
+    task_num = int(input("Which task number to remove priority from? ")) - 1
+    if 0 <= task_num < len(tasks):
+        tasks[task_num]['priority'] = False
+        print("Priority removed from task.")
+    else:
+        print("Invalid task number.")
 
 
+def group_tasks():
+    show_tasks()
+    task_num1 = int(input("Which task number to group with? ")) - 1
+    task_num2 = int(input("Which task number to group? ")) - 1
+    if 0 <= task_num1 < len(tasks) and 0 <= task_num2 < len(tasks):
+        tasks[task_num1]['group'] = task_num2
+        tasks[task_num2]['group'] = task_num1
+        print("Tasks grouped.")
+    else:
+        print("Invalid task numbers.")
 
 
-    def todo_list():
-        while True:
-            show_menu()
-            entered_value = input("Choose an option between 1 to 7")
-            if entered_value == "1":
-                add_task()
-            elif entered_value == "2":
-                edit_task()
-            elif entered_value == "3":
-                mark_as_priority()
-            elif entered_value == "4":
-                delete_task()
-            elif entered_value == "5":
-                group_task()
-            elif entered_value == "6":
-                show_tasks()
-            elif entered_value == "7":
-                print("Thanks for use!!!")
-                break
-            else:
-                print("Invalid option. Please choose a number between 1 and 7")
+def show_tasks():
+    if not tasks:
+        print("No tasks.")
+    else:
+        for i, task in enumerate(tasks, 1):
+            priority = " (Priority)" if task['priority'] else ""
+            group = f" (Grouped with {task['group'] + 1})" if task['group'] is not None else ""
+            print(f"{i}. {task['task']}{priority}{group}")
+
+
+def todo_list():
+    while True:
+        show_menu()
+        choice = input("Choose an option (1-7): ")
+
+        if choice == '1':
+            add_task()
+        elif choice == '2':
+            edit_task()
+        elif choice == '3':
+            mark_priority()
+        elif choice == '4':
+            remove_priority()
+        elif choice == '5':
+            group_tasks()
+        elif choice == '6':
+            show_tasks()
+        elif choice == '7':
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid option, try again.")
+
 
 todo_list()
